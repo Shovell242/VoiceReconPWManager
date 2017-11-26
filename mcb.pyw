@@ -18,12 +18,16 @@ with sr.Microphone() as source:
 
 audioString = r.recognize_google(audio).lower()
 
-openRegex = re.compile(r'(open|save|list)\s+?(.*)?')
+openRegex = re.compile(r'(get|save|list)\s+?(.*)?')
 
 mo = openRegex.search(audioString)
 
 if len(mo.groups()) == 2 and mo.group(1) == 'save':
-
-
-
+    mcbShelf[mo.group(2)] = pyperclip.paste()
+elif len(mo.groups()) == 2 and mo.group(1) == 'get':
+    mcbShelf[mo.group(2)] = pyperclip.copy()
+elif:
+    pyperclip.copy(list(mcbShelf.keys()))
+else:
+    print('im sorry i dont understand that command')
 mcbShelf.close()
