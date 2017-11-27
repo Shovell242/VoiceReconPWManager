@@ -6,7 +6,7 @@
 #        py.exe mcb.pyw <keyword> - Loads keyword to clipboard.
 #        py.exe mcb.pyw list - Loads all keywords to clipboard.
 
-import speech_recognition as sr, shelve, pyperclip, re, os
+import speech_recognition as sr, shelve, pyperclip, re
 
 mcbShelf = shelve.open('mcb')
 
@@ -18,16 +18,22 @@ with sr.Microphone() as source:
 
 audioString = r.recognize_google(audio).lower()
 
-openRegex = re.compile(r'(get|save|list)\s+?(.*)?')
+openRegex = re.compile(r'(get|save|list)(\s+)(.*)')
 
 mo = openRegex.search(audioString)
 
-if len(mo.groups()) == 2 and mo.group(1) == 'save':
-    mcbShelf[mo.group(2)] = pyperclip.paste()
-elif len(mo.groups()) == 2 and mo.group(1) == 'get':
-    mcbShelf[mo.group(2)] = pyperclip.copy()
-elif:
-    pyperclip.copy(list(mcbShelf.keys()))
+command = mo.group(1)
+keyword = mo.group(3)
+
+if command == 'save':
+    mcbShelf[keyword] = pyperclip.paste()
+    print('%s succesfully saved!' % keyword)
+elif command == 'get':
+    pyperclip.copy(mcbShelf[keyword])
+    print('%s password retrieved!' % keyword)
+elif command == 'list' and keyword == 'all':
+    pyperclip.copy(str(list(mcbShelf.keys())))
 else:
     print('im sorry i dont understand that command')
 mcbShelf.close()
+
