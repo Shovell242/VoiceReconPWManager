@@ -2,9 +2,12 @@
 
 # mcb.pyw - save multiple passwords for various websites using keywords and voice recognition
 
-# Usage: <microphone> save <keyword> <microphone>: stores current clipboard to this voice command keyword
+# Usage: <microphone> save <keyword> <microphone>: stores current clipboard password to this voice command keyword
+#        <microphone> delete <keyword> <microphone>: removes keyword and password from the database
 #        <microphone> get <keyword> <microphone>: retrieves keywords password from the database and copies it to the clipboard
 #        <microphone> list all <microphone>: retrieves all keywords from the database and copies it to the clipboard
+#        <microphone> delete all <microphone>: deletes all keywords from the database and copies it to the clipboard
+
 
 import speech_recognition as sr, shelve, pyperclip, re
 
