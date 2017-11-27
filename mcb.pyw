@@ -18,7 +18,7 @@ with sr.Microphone() as source:
 
 audioString = r.recognize_google(audio).lower()
 
-openRegex = re.compile(r'(get|save|list)(\s+)(.*)')
+openRegex = re.compile(r'(get|save|list|delete)(\s+)(.*)')
 
 mo = openRegex.search(audioString)
 
@@ -28,13 +28,20 @@ keyword = mo.group(3)
 if command == 'save':
     mcbShelf[keyword] = pyperclip.paste()
     print('%s succesfully saved!' % keyword)
-elif command == 'get':
+elif command == 'delete' and keyword in list(mcbShelf.keys()):
+    del mcbShelf[keyword]
+    print('%s succesfully deleted' % keyword)
+elif command == 'get' and keyword in list(mcbShelf.keys()):
     pyperclip.copy(mcbShelf[keyword])
     print('%s password retrieved!' % keyword)
+elif command == 'delete' and keyword == 'all':
+    mcbShelf.clear()
+    print('All saved passwords have been cleared')
 elif command == 'list' and keyword == 'all':
     pyperclip.copy(str(list(mcbShelf.keys())))
+    print('All keywords have been copied to the clipboard')
 else:
     print('im sorry i dont understand that command')
-    
+
 mcbShelf.close()
 
